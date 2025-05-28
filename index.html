@@ -4,18 +4,25 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GongXiu Vertical Name Display</title>
+  <title>GongXiu Name Generator</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
+  <header>
+    <h1>GongXiu Name Generator</h1>
+  </header>
+
   <textarea id="input" placeholder="Enter GongXiu names here...&#10;Example: 001 张三"></textarea>
   <input type="file" id="csvInput" accept=".csv" />
   <button onclick="generate()">Generate</button>
   <button onclick="downloadPDF()">Download PDF</button>
+
   <div id="output"></div>
+  <div id="loading" style="display: none;">Generating PDF... Please wait.</div>
+
   <script src="script.js"></script>
 </body>
 
