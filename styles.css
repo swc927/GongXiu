@@ -1,39 +1,83 @@
+html {
+  scroll-behavior: smooth;
+}
+
+header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
 body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom right, #fafafa, #eaeaea);
   margin: 0;
-  padding: 20px;
-  font-family: "KaiTi", "楷体", serif;
-  background: #fff;
+  padding: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #333;
 }
 
-textarea {
-  width: 80%;
-  height: 200px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  padding: 10px;
+h1 {
+  font-size: 2.2em;
+  font-weight: 600;
+  color: #0077cc;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+textarea#input {
+  width: 100%;
+  max-width: 600px;
+  height: 150px;
+  padding: 15px;
+  font-size: 1em;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
   resize: vertical;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+input#csvInput {
+  margin-bottom: 20px;
 }
 
 button {
-  padding: 10px 20px;
-  font-size: 18px;
-  cursor: pointer;
-  background: #0070f3;
-  color: white;
+  background: #0077cc;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  padding: 12px 20px;
   margin: 5px;
-  transition: background 0.3s, transform 0.2s;
+  border-radius: 6px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 button:hover {
-  background: #0055cc;
-  transform: scale(1.05);
+  background: #005fa3;
+  transform: translateY(-2px);
+}
+
+#output {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 30px;
+  gap: 20px;
+}
+
+.name-block {
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: "Noto Sans SC", sans-serif;
+  writing-mode: vertical-rl;
+  text-align: center;
 }
 
 .container {
@@ -43,6 +87,10 @@ button:hover {
   overflow: auto;
   margin-top: 0;
   margin-bottom: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  background: white;
+  padding: 20px;
 }
 
 .page {
@@ -52,23 +100,32 @@ button:hover {
   background-position: center;
   background-repeat: no-repeat;
   page-break-after: always;
-
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 1.05fr 1fr 1fr 1.05fr; /* Visually balanced */
-  row-gap: 8px; /* Reduce this as needed */
+  grid-template-rows: 1.05fr 1fr 1fr 1.05fr;
+  row-gap: 8px;
   column-gap: 15px;
-
-  /* top right bottom left */
   padding: 150px 100px 360px 100px;
-
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
   transform-origin: top center;
   margin-bottom: -30px;
-
   transform: translateY(-17%);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-17%);
+  }
 }
 
 .entry {
@@ -79,16 +136,14 @@ button:hover {
   height: auto;
   width: 100%;
   box-sizing: border-box;
-  padding: 4px; /* Reduced from 10px */
+  padding: 4px;
   overflow: visible;
   min-height: 340px;
 }
 
-#output {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 40px;
+.entry:hover {
+  outline: 2px dashed #aaa;
+  background-color: rgba(255, 255, 0, 0.05);
 }
 
 .page.deceased {
@@ -103,8 +158,8 @@ button:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end; /* Make content align towards the number */
-  gap: 20px; /* Removed gap between name and number */
+  justify-content: flex-end;
+  gap: 20px;
   height: auto;
   max-height: 100%;
   overflow: visible;
@@ -115,7 +170,7 @@ button:hover {
 .name-wrapper.tight-gap {
   padding-top: 10px;
   padding-bottom: 0;
-  gap: 0; /* Reduce spacing between name and number */
+  gap: 0;
 }
 
 .deceased-label {
@@ -144,7 +199,7 @@ button:hover {
 .number {
   font-size: 45px;
   margin: 0;
-  margin-top: 30px; /* Or even 20px — adjust until visually balanced */
+  margin-top: 30px;
   padding: 0;
   color: #333;
   line-height: 1.2;
@@ -156,7 +211,7 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  row-gap: 8px; /* Reduce this as needed */
+  row-gap: 8px;
   column-gap: 15px;
 }
 
@@ -166,7 +221,7 @@ button:hover {
   align-items: center;
   justify-content: center;
   line-height: 1;
-  gap: 2px; /* Optional: space between characters */
+  gap: 2px;
 }
 
 .vertical-char {
@@ -178,6 +233,6 @@ button:hover {
   display: inline-block;
   transform: rotate(90deg) translateY(-2px);
   transform-origin: center;
-  font-size: 80px;
-  line-height: 0.5;
+  font-size: 60px;
+  line-height: 0.7;
 }
