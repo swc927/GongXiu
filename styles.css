@@ -52,22 +52,17 @@ button:hover {
   background-position: center;
   background-repeat: no-repeat;
   page-break-after: always;
-
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 1.05fr 1fr 1fr 1.05fr; /* Visually balanced */
-  row-gap: 8px; /* Reduce this as needed */
+  grid-template-rows: 1.05fr 1fr 1fr 1.05fr;
+  row-gap: 8px;
   column-gap: 15px;
-
-  /* top right bottom left */
   padding: 150px 100px 360px 100px;
-
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
   transform-origin: top center;
   margin-bottom: -30px;
-
   transform: translateY(-17%);
 }
 
@@ -79,7 +74,7 @@ button:hover {
   height: auto;
   width: 100%;
   box-sizing: border-box;
-  padding: 4px; /* Reduced from 10px */
+  padding: 4px;
   overflow: visible;
   min-height: 340px;
 }
@@ -88,7 +83,6 @@ button:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
 }
 
 .page.deceased {
@@ -103,8 +97,8 @@ button:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end; /* Make content align towards the number */
-  gap: 20px; /* Removed gap between name and number */
+  justify-content: flex-end;
+  gap: 20px;
   height: auto;
   max-height: 100%;
   overflow: visible;
@@ -115,7 +109,7 @@ button:hover {
 .name-wrapper.tight-gap {
   padding-top: 10px;
   padding-bottom: 0;
-  gap: 0; /* Reduce spacing between name and number */
+  gap: 20px;
 }
 
 .deceased-label {
@@ -144,10 +138,10 @@ button:hover {
 .number {
   font-size: 45px;
   margin: 0;
-  margin-top: 30px; /* Or even 20px — adjust until visually balanced */
+  margin-top: 30px;
   padding: 0;
   color: #333;
-  line-height: 1.2;
+  line-height: 1.5;
   max-height: 15%;
   overflow: hidden;
 }
@@ -156,7 +150,7 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  row-gap: 8px; /* Reduce this as needed */
+  row-gap: 8px;
   column-gap: 15px;
 }
 
@@ -166,11 +160,12 @@ button:hover {
   align-items: center;
   justify-content: center;
   line-height: 1;
-  gap: 2px; /* Optional: space between characters */
+  gap: 2px;
+  margin-bottom: 20px;
 }
 
 .vertical-char {
-  font-size: 60px;
+  font-size: 70px;
   line-height: 1;
 }
 
@@ -180,4 +175,5 @@ button:hover {
   transform-origin: center;
   font-size: 80px;
   line-height: 0.5;
+  font-weight: 10;
 }
