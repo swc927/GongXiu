@@ -122,7 +122,7 @@ if (isDeceasedOverride && !isSpecialDeceased) {  const deceasedLabel = document.
     "<br>"
   );
   adjustFontSize(nameDiv, name, isDeceasedOverride);
-  if (!isChinese(name) && name.replace(/\n/g, "").length <= 10) {
+if (isEnglish && length <= 10) {
   nameDiv.style.marginBottom = "40px";
 }
 
