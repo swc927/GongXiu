@@ -102,19 +102,19 @@ function createEntry(page, number, name, isDeceasedOverride = false) {
     "冤亲债主",
   ].some((k) => name.includes(k));
 
-  if (isDeceasedOverride && !isSpecialDeceased) {
-    const deceasedLabel = document.createElement("div");
-    deceasedLabel.className = "deceased-label";
-    const vertical = document.createElement("div");
-    vertical.className = "vertical-deceased";
-    vertical.innerHTML = `
-      <span class="rotated-bracket">(</span>
-      <span class="vertical-char">已</span>
-      <span class="vertical-char">故</span>
-      <span class="rotated-bracket">)</span>`;
-    deceasedLabel.appendChild(vertical);
-    nameWrapper.appendChild(deceasedLabel);
-  }
+if (isDeceasedOverride && !isSpecialDeceased && !/众生|歷代|历代|祖宗|祖先|冤亲债主/.test(name)) {
+  const deceasedLabel = document.createElement("div");
+  deceasedLabel.className = "deceased-label";
+  const vertical = document.createElement("div");
+  vertical.className = "vertical-deceased";
+  vertical.innerHTML = `
+    <span class="rotated-bracket">(</span>
+    <span class="vertical-char">已</span>
+    <span class="vertical-char">故</span>
+    <span class="rotated-bracket">)</span>`;
+  deceasedLabel.appendChild(vertical);
+  nameWrapper.appendChild(deceasedLabel);
+}
 
   const nameDiv = document.createElement("div");
   nameDiv.className = "name";
