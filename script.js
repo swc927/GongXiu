@@ -44,6 +44,7 @@ function generate() {
       "祖先",
       "冤亲债主",
       "sentient beings",
+      "all sentient beings",
     ].some((keyword) => nameRaw.includes(keyword));
 
     const cleanedName = isDeceasedEntry
@@ -100,6 +101,7 @@ function createEntry(page, number, name, isDeceasedOverride = false) {
     "祖先",
     "冤亲债主",
     "sentient beings",
+    "all sentient beings",
   ].some((k) => name.includes(k));
 
   if (isDeceasedOverride && !isSpecialDeceased) {
