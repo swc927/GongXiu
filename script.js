@@ -93,16 +93,20 @@ function createEntry(page, number, name, isDeceasedOverride = false) {
   entry.className = "entry";
   const nameWrapper = document.createElement("div");
   nameWrapper.className = "name-wrapper";
+  const cleanName = name
+  .toLowerCase()
+  .replace(/[\s\u00A0\u3000]+/g, " ")
+  .trim();
   const isSpecialDeceased = [
-    "众生",
-    "歷代",
-    "历代",
-    "祖宗",
-    "祖先",
-    "冤亲债主",
-    "sentient beings",
-    "all sentient beings",
-  ].some((k) => name.includes(k));
+  "众生",
+  "歷代",
+  "历代",
+  "祖宗",
+  "祖先",
+  "冤亲债主",
+  "sentient beings",
+  "all sentient beings"
+  ].some((k) => cleanName.includes(k));
 
   if (isDeceasedOverride && !isSpecialDeceased) {
     const deceasedLabel = document.createElement("div");
