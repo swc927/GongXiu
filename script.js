@@ -44,7 +44,6 @@ function generate() {
       "祖先",
       "冤亲债主",
       "sentient beings",
-      "all sentient beings",
     ].some((keyword) => nameRaw.includes(keyword));
 
     const cleanedName = isDeceasedEntry
@@ -100,20 +99,22 @@ function createEntry(page, number, name, isDeceasedOverride = false) {
     "祖宗",
     "祖先",
     "冤亲债主",
+    "sentient beings",
   ].some((k) => name.includes(k));
 
-if (isDeceasedOverride && !isSpecialDeceased) {  const deceasedLabel = document.createElement("div");
-  deceasedLabel.className = "deceased-label";
-  const vertical = document.createElement("div");
-  vertical.className = "vertical-deceased";
-  vertical.innerHTML = `
-    <span class="rotated-bracket">(</span>
-    <span class="vertical-char">已</span>
-    <span class="vertical-char">故</span>
-    <span class="rotated-bracket">)</span>`;
-  deceasedLabel.appendChild(vertical);
-  nameWrapper.appendChild(deceasedLabel);
-}
+  if (isDeceasedOverride && !isSpecialDeceased) {
+    const deceasedLabel = document.createElement("div");
+    deceasedLabel.className = "deceased-label";
+    const vertical = document.createElement("div");
+    vertical.className = "vertical-deceased";
+    vertical.innerHTML = `
+      <span class="rotated-bracket">(</span>
+      <span class="vertical-char">已</span>
+      <span class="vertical-char">故</span>
+      <span class="rotated-bracket">)</span>`;
+    deceasedLabel.appendChild(vertical);
+    nameWrapper.appendChild(deceasedLabel);
+  }
 
   const nameDiv = document.createElement("div");
   nameDiv.className = "name";
@@ -121,11 +122,16 @@ if (isDeceasedOverride && !isSpecialDeceased) {  const deceasedLabel = document.
     /\n/g,
     "<br>"
   );
-  adjustFontSize(nameDiv, name, isDeceasedOverride);
-if (isEnglish && length <= 10) {
-  nameDiv.style.marginBottom = "40px";
-}
 
+  adjustFontSize(nameDiv, name, isDeceasedOverride);
+
+  // ✅ PATCH A — Add missing variable declarations:
+  const length = name.replace(/\n/g, "").length;
+  const isEnglish = !isChinese(name);
+
+  if (isEnglish && length <= 10) {
+    nameDiv.style.marginBottom = "40px";
+  }
 
   if (name.replace(/\n/g, "").length > 6) {
     nameWrapper.classList.add("tight-gap");
@@ -202,34 +208,23 @@ function adjustFontSize(nameDiv, name, isDeceased = false) {
     : "1.05";
 }
 
+// ✅ PATCH B — Updated smartCapitalize function:
 function smartCapitalize(name) {
   if (/有限公司$|私人有限公司$/.test(name)) return name;
-  name = name.replace(/&amp;/g, " & ");
-  let result = "",
-    currentWord = "";
-  for (let char of name) {
-    if (/[a-zA-Z]/.test(char)) currentWord += char;
-    else {
-      if (currentWord) {
-        result +=
-          currentWord.charAt(0).toUpperCase() +
-          currentWord.slice(1).toLowerCase();
-        currentWord = "";
-      }
-      result += char;
-    }
-  }
-  if (currentWord)
-    result +=
-      currentWord.charAt(0).toUpperCase() + currentWord.slice(1).toLowerCase();
-  return result;
+
+  return name.replace(/&amp;/g, " & ").split(/\b/).map((word) => {
+    return /^[a-zA-Z]+$/.test(word)
+      ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+      : word;
+  }).join("");
 }
 
+// ✅ PATCH C — Scaling adjusted to A3 dimensions:
 function scalePages() {
   document.querySelectorAll(".container").forEach((container) => {
     const page = container.querySelector(".page");
-    const scaleX = (window.innerWidth * 0.95) / 2480;
-    const scaleY = (window.innerHeight * 0.9) / 3508;
+    const scaleX = (window.innerWidth * 0.95) / 3508;
+    const scaleY = (window.innerHeight * 0.9) / 4961;
     const scale = Math.min(scaleX, scaleY);
     page.style.transform = `scale(${scale})`;
     page.style.transformOrigin = "top center";
@@ -255,8 +250,9 @@ document.getElementById("csvInput").addEventListener("change", function (e) {
       .filter(Boolean);
     document.getElementById("input").value = lines
       .map((line) => {
-        const [number, name] = line.split(",");
-        return `${number} ${name}`;
+        // ✅ PATCH D — CSV logic now handles commas in names:
+        const [number, ...nameParts] = line.split(/,(.+)/);
+        return `${number.trim()} ${nameParts.join("").trim()}`;
       })
       .join("\n");
   };
