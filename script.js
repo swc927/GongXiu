@@ -153,7 +153,8 @@ function createEntry(page, number, name, isDeceasedOverride = false) {
 }
 
 function formatName(name, isSpecialDeceased) {
-  if (isSpecialDeceased || /^[\u4e00-\u9fff]+$/.test(name)) {
+  const isChineseOnly = /^[\u4e00-\u9fff]+$/.test(name);
+  if (isChineseOnly) {
     return name.split("").join("\n");
   }
   const result = [],
