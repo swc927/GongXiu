@@ -1,5 +1,3 @@
-// === GongXiu Vertical Name Display Script ===
-
 const lampBackground = "GongXiu.png";
 const deceasedBackground = "GongXiu-Deceased.png";
 
@@ -94,18 +92,18 @@ function createEntry(page, number, name, isDeceasedOverride = false) {
   const nameWrapper = document.createElement("div");
   nameWrapper.className = "name-wrapper";
   const cleanName = name
-  .toLowerCase()
-  .replace(/[\s\u00A0\u3000]+/g, " ")
-  .trim();
+    .toLowerCase()
+    .replace(/[\s\u00A0\u3000]+/g, " ")
+    .trim();
   const isSpecialDeceased = [
-  "众生",
-  "歷代",
-  "历代",
-  "祖宗",
-  "祖先",
-  "冤亲债主",
-  "sentient beings",
-  "all sentient beings"
+    "众生",
+    "歷代",
+    "历代",
+    "祖宗",
+    "祖先",
+    "冤亲债主",
+    "sentient beings",
+    "all sentient beings",
   ].some((k) => cleanName.includes(k));
 
   if (isDeceasedOverride && !isSpecialDeceased) {
@@ -131,7 +129,6 @@ function createEntry(page, number, name, isDeceasedOverride = false) {
 
   adjustFontSize(nameDiv, name, isDeceasedOverride);
 
-  // ✅ PATCH A — Add missing variable declarations:
   const length = name.replace(/\n/g, "").length;
   const isEnglish = !isChinese(name);
 
@@ -215,18 +212,39 @@ function adjustFontSize(nameDiv, name, isDeceased = false) {
     : "1.05";
 }
 
-// ✅ PATCH B — Updated smartCapitalize function:
 function smartCapitalize(name) {
-  if (/有限公司$|私人有限公司$/.test(name)) return name;
+  const corporateSuffixes = [
+    "pte ltd",
+    "private limited",
+    "llp",
+    "plc",
+    "inc",
+    "corp",
+    "co",
+    "co.",
+    "ltd",
+    "limited",
+    "有限公司",
+    "私人有限公司",
+  ];
 
-  return name.replace(/&amp;/g, " & ").split(/\b/).map((word) => {
-    return /^[a-zA-Z]+$/.test(word)
-      ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-      : word;
-  }).join("");
+  const lowerCaseName = name.toLowerCase().trim();
+
+  if (corporateSuffixes.some((suffix) => lowerCaseName.endsWith(suffix))) {
+    return name;
+  }
+
+  return name
+    .replace(/&amp;/g, " & ")
+    .split(/\b/)
+    .map((word) => {
+      return /^[a-zA-Z]+$/.test(word)
+        ? word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        : word;
+    })
+    .join("");
 }
 
-// ✅ PATCH C — Scaling adjusted to A3 dimensions:
 function scalePages() {
   document.querySelectorAll(".container").forEach((container) => {
     const page = container.querySelector(".page");
