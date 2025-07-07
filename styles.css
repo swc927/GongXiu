@@ -57,13 +57,13 @@ button:hover {
   grid-template-rows: 1.05fr 1fr 1fr 1.05fr;
   row-gap: 8px;
   column-gap: 15px;
-  padding: 150px 100px 360px 100px;
+  padding: 150px 100px 360px 115px;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
   transform-origin: top center;
   margin-bottom: -30px;
-  transform: translateY(-17%);
+  transform: translateY(-10%);
 }
 
 .entry {
@@ -141,7 +141,7 @@ button:hover {
   color: #333;
   line-height: 1.5;
   max-height: 15%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .grid-page {
