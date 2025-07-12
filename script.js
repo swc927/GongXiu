@@ -63,6 +63,10 @@ function generate() {
       createEntry(page, number, name);
       regularCount++;
     }
+
+    const totalPages = document.querySelectorAll(".container").length;
+    const pageCountDisplay = document.getElementById("pageCount");
+    pageCountDisplay.textContent = `Total Pages: ${totalPages}`;
   });
 
   document.querySelectorAll(".page").forEach((page) => {
