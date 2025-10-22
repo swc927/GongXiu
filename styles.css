@@ -1,12 +1,50 @@
+/* ========== ROOT THEME ========== */
+/* NEW: centralised glow palette and easing */
+:root {
+  --bg-grad-start: #f0f2f5;
+  --bg-grad-end: #e2e6ec;
+
+  --glow-cyan: #74f9ff;
+  --glow-blue: #4da3ff;
+  --glow-pink: #ff6bd6;
+  --glow-purple: #b089ff;
+  --glow-yellow: #ffe66b;
+
+  --ink: #222;
+  --ink-soft: #2c3e50;
+
+  --radius: 12px;
+  --elev-1: 0 4px 12px rgba(0,0,0,0.10);
+  --elev-2: 0 8px 24px rgba(0,0,0,0.18);
+
+  --speed-fast: 200ms;
+  --speed-med: 400ms;
+  --ease: cubic-bezier(.2,.8,.2,1);
+}
+
+/* ========== BASE ========== */
 body {
   margin: 0;
   padding: 20px;
   font-family: "KaiTi", "楷体", serif;
-  background: linear-gradient(to right, #f0f2f5, #e2e6ec);
-  color: #222;
+  /* CHANGED: keep your soft gradient but allow animated sheen on screen only */
+  background: linear-gradient(to right, var(--bg-grad-start), var(--bg-grad-end));
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* NEW: subtle animated sheen for screen, disabled for print */
+@media screen {
+  body {
+    background-size: 200% 200%;
+    animation: bgSheen 18s var(--ease) infinite alternate;
+  }
+  @keyframes bgSheen {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
 }
 
 header h1 {
@@ -14,12 +52,19 @@ header h1 {
   font-size: 40px;
   font-weight: 600;
   margin-bottom: 30px;
-  color: #2c3e50;
+  color: var(--ink-soft);
+  /* NEW: faint headline glow for screen */
+  text-shadow:
+    0 0 0.5px rgba(0,0,0,0.2),
+    0 0 12px rgba(116,249,255,0.35);
 }
 
+/* ========== INPUTS ========== */
 #input {
   background: #fafafa;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  box-shadow: var(--elev-1);
+  /* NEW: glowing edge on focus within */
+  border-radius: var(--radius);
 }
 
 textarea {
@@ -28,11 +73,21 @@ textarea {
   font-size: 16px;
   margin-bottom: 20px;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #d0d6df; /* CHANGED: lighter edge to take glow nicely */
+  border-radius: var(--radius);
   resize: vertical;
+  transition: box-shadow var(--speed-med) var(--ease), border-color var(--speed-fast) var(--ease);
 }
 
+textarea:focus {
+  outline: none;
+  border-color: #9ecbff; /* NEW */
+  box-shadow:
+    0 0 0 3px rgba(77,163,255,0.25),
+    0 0 24px rgba(116,249,255,0.35); /* NEW neon aura */
+}
+
+/* ========== BUTTONS ========== */
 button {
   letter-spacing: 0.5px;
   padding: 10px 20px;
@@ -40,20 +95,36 @@ button {
   font-weight: 600;
   font-size: 18px;
   cursor: pointer;
-  background: #0070f3;
+  background: linear-gradient(135deg, #0070f3 0%, #5a94ff 100%); /* CHANGED */
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius);
   margin: 5px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: background 0.3s, transform 0.2s;
+  box-shadow:
+    var(--elev-1),
+    0 0 0 1px rgba(255,255,255,0.06) inset; /* NEW */
+  transition: transform var(--speed-fast) var(--ease), box-shadow var(--speed-fast) var(--ease), filter var(--speed-fast) var(--ease);
 }
 
 button:hover {
-  background: #0055cc;
-  transform: scale(1.05);
+  transform: translateY(-1px) scale(1.03); /* CHANGED */
+  box-shadow:
+    var(--elev-2),
+    0 0 12px rgba(116,249,255,0.55),
+    0 0 32px rgba(77,163,255,0.45); /* NEW neon bloom */
+  filter: saturate(1.15); /* NEW */
 }
 
+button:active {
+  transform: translateY(0) scale(0.995); /* NEW */
+}
+
+button:focus-visible {
+  outline: 3px solid rgba(116,249,255,0.6); /* NEW */
+  outline-offset: 2px; /* NEW */
+}
+
+/* ========== LAYOUT ========== */
 .container {
   width: 100%;
   display: flex;
@@ -82,16 +153,42 @@ button:hover {
   transform-origin: top center;
   margin-bottom: -30px;
   transform: translateY(-10%);
+  /* NEW: subtle inner glow frame for screen */
+}
+@media screen {
+  .page::after {
+    content: "";
+    position: absolute;
+    inset: 24px;
+    border-radius: 18px;
+    pointer-events: none;
+    box-shadow:
+      0 0 0 2px rgba(255,255,255,0.08) inset,
+      0 0 32px rgba(176,137,255,0.22) inset,
+      0 0 60px rgba(77,163,255,0.18) inset; /* NEW */
+  }
 }
 
+/* ========== PAGE THEMES ========== */
+.page.deceased {
+  background-image: url("GongXiu-Deceased.png");
+}
+.page.regular {
+  background-image: url("GongXiu.png");
+}
+
+/* ========== PAGE COUNT ========== */
 #pageCount.page-count-display {
   margin-top: 30px;
   font-size: 20px;
   font-weight: 500;
   color: #555;
   font-family: 'Segoe UI', sans-serif;
+  /* NEW: light glow to tie in with theme */
+  text-shadow: 0 0 10px rgba(176,137,255,0.35);
 }
 
+/* ========== ENTRY CELLS ========== */
 .entry {
   display: flex;
   flex-direction: column;
@@ -103,22 +200,32 @@ button:hover {
   padding: 4px;
   overflow: visible;
   min-height: 340px;
+  position: relative; /* NEW: for glow border */
 }
 
+/* NEW: neon edge for entries on screen, print stays clean */
+@media screen {
+  .entry::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    pointer-events: none;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.06) inset,
+      0 0 22px rgba(116,249,255,0.25),
+      0 0 42px rgba(176,137,255,0.18);
+  }
+}
+
+/* ========== OUTPUT WRAPPER ========== */
 #output {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.page.deceased {
-  background-image: url("GongXiu-Deceased.png");
-}
-
-.page.regular {
-  background-image: url("GongXiu.png");
-}
-
+/* ========== NAME BLOCKS ========== */
 .name-wrapper {
   display: flex;
   flex-direction: column;
@@ -142,8 +249,14 @@ button:hover {
   margin: 0;
   padding: 0;
   line-height: 1;
+  /* NEW: strong magenta glow for label */
+  text-shadow:
+    0 0 2px rgba(0,0,0,0.35),
+    0 0 10px rgba(255,107,214,0.7),
+    0 0 22px rgba(176,137,255,0.6);
 }
 
+/* CHANGED: name styling with layered glow and stroke for readability on bright images */
 .name {
   margin: 0;
   padding: 0;
@@ -157,8 +270,21 @@ button:hover {
   font-size: clamp(24px, 5vw, 60px);
   max-height: none;
   box-sizing: border-box;
+
+  /* NEW: screen glow */
+}
+@media screen {
+  .name {
+    -webkit-text-stroke: 0.5px rgba(0,0,0,0.35);
+    text-shadow:
+      0 0 1px rgba(0,0,0,0.25),
+      0 0 10px rgba(116,249,255,0.55),
+      0 0 18px rgba(77,163,255,0.45),
+      0 0 28px rgba(176,137,255,0.35);
+  }
 }
 
+/* CHANGED: number with a soft cyan edge */
 .number {
   font-size: 45px;
   margin: 0;
@@ -168,8 +294,12 @@ button:hover {
   line-height: 1.5;
   max-height: 15%;
   overflow: visible;
+  text-shadow:
+    0 0 1px rgba(0,0,0,0.2),
+    0 0 10px rgba(116,249,255,0.3); /* NEW */
 }
 
+/* ========== GRID ========== */
 .grid-page {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -178,6 +308,7 @@ button:hover {
   column-gap: 15px;
 }
 
+/* ========== VERTICAL MARKS ========== */
 .vertical-deceased {
   display: flex;
   flex-direction: column;
@@ -186,6 +317,8 @@ button:hover {
   line-height: 1;
   gap: 2px;
   margin-bottom: 20px;
+  /* NEW: gentle vertical glow */
+  text-shadow: 0 0 12px rgba(176,137,255,0.45);
 }
 
 .vertical-char {
@@ -200,4 +333,29 @@ button:hover {
   font-size: 80px;
   line-height: 0.5;
   font-weight: 10;
+  /* NEW */
+  text-shadow: 0 0 10px rgba(77,163,255,0.45);
+}
+
+/* ========== SCREEN VS PRINT ========== */
+/* NEW: keep prints crisp without glow ink bleed */
+@media print {
+  * {
+    text-shadow: none !important;
+    box-shadow: none !important;
+    animation: none !important;
+    filter: none !important;
+  }
+  .name { -webkit-text-stroke: 0 !important; }
+  .page::after,
+  .entry::before { display: none !important; }
+}
+
+/* ========== ACCESSIBILITY ========== */
+/* NEW: respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
